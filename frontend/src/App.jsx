@@ -1,13 +1,17 @@
 import React from 'react'
-import Home from './page/Home.jsx'
+import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import { AuthProvider } from './features/auth/auth.context.jsx'
+import AppRoutes from './AppRoutes'
 
 const App = () => {
   return (
-    <div>
-      
-      <Home />
 
-    </div>
+      <AuthProvider>
+
+        <AppRoutes/>
+
+      </AuthProvider>
+      
   )
 }
 
