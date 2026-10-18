@@ -1,0 +1,553 @@
+// Colors
+$primary: #7c3aed;
+$primary-dark: #6d28d9;
+$secondary: #ec4899;
+$secondary-dark: #db2777;
+$accent: #f97316;
+$text: #111827;
+$muted: #6b7280;
+$border: #e5e7eb;
+
+$gradient: linear-gradient(135deg, $primary, $secondary-dark);
+$text-gradient: linear-gradient(90deg, $primary, $secondary);
+
+
+// Hero Section
+.hero {
+    width: 100%;
+    padding: clamp(2rem, 5vw, 5rem) 0;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            60rem 30rem at 85% -10%,
+            rgba(124, 58, 237, 0.09),
+            transparent 70%
+        ),
+        radial-gradient(
+            40rem 26rem at -5% 20%,
+            rgba(236, 72, 153, 0.07),
+            transparent 70%
+        ),
+        #fff;
+
+
+    // Main Container
+    .hero__container {
+        width: 100%;
+        max-width: 75rem;
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 2.5vw, 2rem);
+
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: center;
+        gap: clamp(2rem, 4vw, 4rem);
+    }
+
+
+    // Left Content
+    .hero__content {
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+
+
+    // Small Badge
+    .hero__badge {
+        display: inline-block;
+        padding: 0.4rem 0.9rem;
+
+        border-radius: 999px;
+        border: 1px solid rgba(124, 58, 237, 0.16);
+
+        background: rgba(124, 58, 237, 0.08);
+        color: $primary-dark;
+
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+    }
+
+
+    // Heading
+    .hero__title {
+        margin: 0;
+
+        color: $text;
+        font-size: clamp(2.1rem, 1.35rem + 3.6vw, 4rem);
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -0.035em;
+
+
+        .text-gradient {
+            background: $text-gradient;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+
+
+    // Description
+    .hero__description {
+        max-width: 34rem;
+        margin: 0;
+
+        color: $muted;
+        font-size: clamp(1rem, 0.95rem + 0.3vw, 1.175rem);
+        line-height: 1.6;
+    }
+
+
+    // Buttons Container
+    .hero__buttons {
+        width: 100%;
+        margin-top: 0.5rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+
+        // Common Button Styling
+        .hero__button {
+            min-height: 3.25rem;
+            padding: 0.85rem 1.75rem;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+
+            border: 2px solid transparent;
+            border-radius: 999px;
+
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.2;
+            text-align: center;
+            text-decoration: none;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.3s,
+                box-shadow 0.3s,
+                background-color 0.3s,
+                border-color 0.3s;
+
+
+            // Get Started Button
+            &--primary {
+                background: $gradient;
+                color: #fff;
+
+                box-shadow: 0 10px 24px -8px rgba(124, 58, 237, 0.55);
+
+                span {
+                    font-size: 1.3rem;
+                }
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 16px 30px -8px rgba(124, 58, 237, 0.6);
+                }
+            }
+
+
+            // Explore Features Button
+            &--secondary {
+                background: #fff;
+                color: $primary-dark;
+                border-color: rgba(124, 58, 237, 0.3);
+
+                &:hover {
+                    transform: translateY(-2px);
+                    border-color: $primary;
+                    background: rgba(124, 58, 237, 0.06);
+                }
+            }
+        }
+    }
+
+
+    // Community Section
+    .hero__community {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+
+
+        p {
+            max-width: 15rem;
+            margin: 0;
+
+            color: $muted;
+            font-size: 0.875rem;
+            line-height: 1.45;
+        }
+    }
+
+
+    // Community Avatars
+    .hero__avatars {
+        display: flex;
+        flex-shrink: 0;
+    }
+
+
+    .hero__avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+
+        display: grid;
+        place-items: center;
+
+        border: 2px solid #fff;
+        border-radius: 50%;
+
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+
+        box-shadow: 0 2px 8px rgba(17, 24, 39, 0.05);
+
+
+        & + & {
+            margin-left: -0.45rem;
+        }
+    }
+
+
+    // Avatar Background Colors
+    .avatar-one {
+        background: linear-gradient(135deg, #7c3aed, #ec4899);
+    }
+
+    .avatar-two {
+        background: linear-gradient(135deg, #f97316, #ec4899);
+    }
+
+    .avatar-three {
+        background: linear-gradient(135deg, #0ea5e9, #7c3aed);
+    }
+
+    .avatar-four {
+        background: linear-gradient(135deg, #14b8a6, #3b82f6);
+    }
+
+    .avatar-five {
+        background: linear-gradient(135deg, #ec4899, #f97316);
+    }
+
+
+    // Right Visual Section
+    .hero__visual {
+        min-width: 0;
+    }
+
+
+    // Phone Showcase
+    .hero__showcase {
+        position: relative;
+
+        width: 100%;
+        max-width: 30rem;
+        margin: 0 auto;
+        padding: 1rem 0;
+
+        display: grid;
+        place-items: center;
+
+
+        // Background Glow
+        &::before {
+            content: '';
+
+            position: absolute;
+            inset: 6% 4%;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    rgba(124, 58, 237, 0.28),
+                    transparent 60%
+                ),
+                radial-gradient(
+                    circle at 70% 75%,
+                    rgba(236, 72, 153, 0.26),
+                    transparent 58%
+                ),
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(249, 115, 22, 0.18),
+                    transparent 45%
+                );
+
+            filter: blur(12px);
+        }
+    }
+
+
+    // Phone Image
+    .hero__phone {
+        position: relative;
+
+        width: min(17rem, 78%);
+        height: auto;
+
+        filter: drop-shadow(0 20px 30px rgba(17, 24, 39, 0.28));
+    }
+
+
+    // Floating Cards Common Styling
+    .hero__floating {
+        position: absolute;
+
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+
+        max-width: 62%;
+        padding: 0.5rem 0.7rem;
+
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid $border;
+        border-radius: 0.875rem;
+
+        box-shadow: 0 8px 24px -6px rgba(17, 24, 39, 0.12);
+
+        font-size: 0.7rem;
+        line-height: 1.3;
+
+        animation: hero-float 6s ease-in-out infinite;
+
+
+        strong,
+        small {
+            display: block;
+        }
+
+        small {
+            color: $muted;
+        }
+    }
+
+
+    // Notification Card
+    .hero__notification {
+        top: 14%;
+        left: 0;
+
+
+        .hero__notification-icon {
+            width: 1.75rem;
+            height: 1.75rem;
+            flex-shrink: 0;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background: $secondary-dark;
+            color: #fff;
+            font-size: 1rem;
+        }
+    }
+
+
+    // Likes Card
+    .hero__likes {
+        right: 0;
+        bottom: 20%;
+
+        animation-delay: -2s;
+
+
+        .hero__small-avatars {
+            display: flex;
+        }
+
+
+        .small-avatar {
+            width: 1.6rem;
+            height: 1.6rem;
+
+            border: 2px solid #fff;
+            border-radius: 50%;
+
+
+            & + & {
+                margin-left: -0.5rem;
+            }
+        }
+    }
+
+
+    // Profile Card
+    .hero__profile {
+        bottom: 5%;
+        left: 2%;
+
+        display: none;
+        animation-delay: -4s;
+
+
+        .hero__profile-avatar {
+            width: 2rem;
+            height: 2rem;
+            flex-shrink: 0;
+
+            border-radius: 50%;
+            background: linear-gradient(135deg, #14b8a6, #3b82f6);
+        }
+    }
+
+
+    // Entrance Animation
+    .hero__content > *,
+    .hero__visual {
+        animation: hero-fade-up 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+
+    .hero__content > :nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .hero__content > :nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .hero__content > :nth-child(4) {
+        animation-delay: 0.3s;
+    }
+
+    .hero__content > :nth-child(5) {
+        animation-delay: 0.4s;
+    }
+
+    .hero__visual {
+        animation-delay: 0.3s;
+    }
+
+
+    // Tablet
+    @media (min-width: 641px) {
+        .hero__buttons {
+            width: auto;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+
+            .hero__button {
+                width: auto;
+            }
+        }
+
+
+        .hero__floating {
+            padding: 0.65rem 0.85rem;
+            font-size: 0.78rem;
+        }
+
+
+        .hero__profile {
+            display: flex;
+        }
+    }
+
+
+    // Desktop
+    @media (min-width: 900px) {
+        .hero__container {
+            grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+        }
+
+
+        .hero__phone {
+            width: min(17.5rem, 68%);
+        }
+    }
+
+
+    // Large Screens
+    @media (min-width: 1200px) {
+        .hero__container {
+            gap: 4rem;
+        }
+    }
+
+
+    // Small Phones
+    @media (max-width: 375px) {
+        .hero__badge {
+            font-size: 0.62rem;
+            letter-spacing: 0.05em;
+        }
+
+
+        .hero__community {
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+
+        .hero__avatar {
+            width: 2rem;
+            height: 2rem;
+        }
+
+
+        .hero__floating {
+            max-width: 70%;
+            font-size: 0.6rem;
+        }
+    }
+}
+
+
+// Animations
+@keyframes hero-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
+@keyframes hero-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+    .hero,
+    .hero * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

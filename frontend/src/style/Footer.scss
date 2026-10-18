@@ -1,0 +1,134 @@
+
+/* General styles */
+* {
+  box-sizing: border-box;
+}
+
+.footer {
+  padding: 64px 32px 28px;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Center the footer content */
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Logo and links in one row */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+/* Logo and tagline */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+/* Logo layout */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #111827;
+  text-decoration: none;
+}
+
+/* Logo icon background */
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  box-shadow: 0 6px 14px -6px rgba(124, 58, 237, 0.7);
+}
+
+/* Logo text */
+.logo-text {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* Tagline */
+.footer-tagline {
+  max-width: 320px;
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Navigation list */
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Navigation links */
+.footer-links a {
+  display: inline-block;
+  padding: 6px 0;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* Hover effect */
+.footer-links a:hover {
+  color: #7c3aed;
+}
+
+/* Keyboard accessibility */
+.footer a:focus-visible {
+  outline: 3px solid #7c3aed;
+  outline-offset: 3px;
+}
+
+/* Copyright */
+.footer-copyright {
+  margin: 40px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Responsive layout for tablets and mobile */
+@media (max-width: 899px) {
+  .footer {
+    padding: 40px 20px 24px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .footer-links {
+    justify-content: flex-start;
+    gap: 8px 24px;
+  }
+
+  .footer-copyright {
+    margin-top: 28px;
+  }
+}

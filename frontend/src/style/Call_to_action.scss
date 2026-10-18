@@ -1,0 +1,258 @@
+// ==============================
+// Colors
+// ==============================
+
+$primary: #7c3aed;
+$primary-dark: #6d28d9;
+$pink-dark: #db2777;
+$orange: #f97316;
+$text: #111827;
+
+$gradient: linear-gradient(135deg, $primary, $pink-dark);
+
+
+// ==============================
+// CTA Section
+// ==============================
+
+.cta {
+    width: 100%;
+    padding: 3.5rem 1.25rem;
+
+
+    // Main Colored Box
+    .cta__box {
+        position: relative;
+
+        width: 100%;
+        max-width: 62rem;
+        margin: 0 auto;
+        padding: 2.75rem 1.375rem;
+
+        overflow: hidden;
+
+        border-radius: 1.75rem;
+        background: $gradient;
+
+        color: #fff;
+        text-align: center;
+
+        box-shadow: 0 30px 60px -24px rgba($primary, 0.6);
+
+
+        // Decorative Circle at the Top Right
+        &::before {
+            content: '';
+
+            position: absolute;
+            top: -6.875rem;
+            right: -4.375rem;
+
+            width: 13.75rem;
+            height: 13.75rem;
+
+            border-radius: 50%;
+            background: rgba(#fff, 0.12);
+        }
+
+
+        // Decorative Circle at the Bottom Left
+        &::after {
+            content: '';
+
+            position: absolute;
+            bottom: -4.375rem;
+            left: -2.5rem;
+
+            width: 9.375rem;
+            height: 9.375rem;
+
+            border-radius: 50%;
+            background: rgba($orange, 0.35);
+        }
+    }
+
+
+    // Heading
+    .cta__title {
+        position: relative;
+        z-index: 1;
+
+        margin: 0;
+
+        font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.75rem);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+    }
+
+
+    // Description
+    .cta__text {
+        position: relative;
+        z-index: 1;
+
+        max-width: 34rem;
+        margin: 0.875rem auto 0;
+
+        color: rgba(#fff, 0.92);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+
+    // Button and Login Link Container
+    .cta__actions {
+        position: relative;
+        z-index: 1;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        margin-top: 1.75rem;
+    }
+
+
+    // Create Account Button
+    .cta__button {
+        width: 100%;
+        min-height: 3.25rem;
+        padding: 0.875rem 2rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 999px;
+        background: #fff;
+
+        color: $primary-dark;
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+
+        box-shadow: 0 12px 28px -10px rgba($text, 0.45);
+
+        transition: transform 0.3s ease;
+
+
+        &:hover {
+            transform: translateY(-2px);
+        }
+
+
+        &:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 4px;
+        }
+    }
+
+
+    // Login Text
+    .cta__login {
+        margin: 0;
+
+        color: rgba(#fff, 0.92);
+        font-size: 0.9375rem;
+        line-height: 1.5;
+
+
+        a {
+            color: #fff;
+            font-weight: 700;
+
+            text-decoration: underline;
+            text-underline-offset: 3px;
+
+
+            &:focus-visible {
+                outline: 2px solid #fff;
+                outline-offset: 4px;
+            }
+        }
+    }
+}
+
+
+// ==============================
+// Tablet
+// 641px to 1024px
+// ==============================
+
+@media (min-width: 641px) {
+
+    .cta {
+        padding: 5rem 2rem;
+
+
+        .cta__box {
+            padding: 4rem 3rem;
+        }
+
+
+        .cta__title {
+            font-size: 2.25rem;
+        }
+
+
+        .cta__text {
+            font-size: 1.0625rem;
+        }
+
+
+        .cta__button {
+            width: auto;
+        }
+    }
+}
+
+
+// ==============================
+// Desktop
+// 1025px and above
+// ==============================
+
+@media (min-width: 1025px) {
+
+    .cta {
+        padding: 6rem 2rem;
+
+
+        .cta__box {
+            padding: 4.5rem 3.5rem;
+        }
+
+
+        .cta__title {
+            font-size: 2.75rem;
+        }
+
+
+        .cta__text {
+            font-size: 1.125rem;
+        }
+    }
+}
+
+
+// ==============================
+// Accessibility
+// ==============================
+
+@media (prefers-reduced-motion: reduce) {
+
+    .cta {
+
+        .cta__button {
+            transition: none;
+
+
+            &:hover {
+                transform: none;
+            }
+        }
+    }
+}
