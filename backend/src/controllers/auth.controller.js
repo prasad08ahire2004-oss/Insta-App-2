@@ -182,7 +182,123 @@ async function registerController(req, res) {
 }
 
 
+async function loginController(req, res) {
+    try {
+        // 1. Check whether the request body exists
+        if (!req.body || typeof req.body !== 'object' || Array.isArray(req.body)) {
+            return res.status(400).json({
+                message: 'Please provide your login details'
+            })
+        }
+
+        // 2. Get the login details
+        const { username, email, password } = req.body
+
+        // 3. Make sure the password is provided
+        if (typeof password !== 'string' || !password.trim()) {
+            return res.status(400).json({
+                message: 'Password is required'
+            })
+        }
+
+        // 4. The user must provide either a username or an email
+        const hasUsername = typeof username === 'string' && username.trim() !== ''
+        const hasEmail = typeof email === 'string' && email.trim() !== ''
+
+        if (!hasUsername && !hasEmail) {
+            return res.status(400).json({
+                message: 'Please enter your username or email'
+            })
+        }
+
+        // 5. Use the username if provided; otherwise, use the email
+        // This allows both username + password and email + password login.
+        const loginValue = hasUsername
+            ? username.trim().toLowerCase()
+            : email.trim().toLowerCase()
+
+        // 6. Find the user and include the password hash.
+        // Passwords are normally excluded because the model uses select: false.
+        const user = await userModel.findOne(
+            hasUsername
+                ? { username: loginValue }
+                : { email: loginValue }
+        ).select('+password')
+
+        // 7. Use the same error for unknown users and wrong passwords.
+        // This avoids revealing whether an account exists.
+        if (!user) {
+            return res.status(401).json({
+                message: 'Invalid username/email or password'
+            })
+        }
+
+        // 8. Compare the entered password with the stored password hash.
+        const isPasswordValid = await bcrypt.compare(
+            password,
+            user.password
+        )
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: 'Invalid username/email or password'
+            })
+        }
+
+        // 9. Make sure the JWT secret is configured.
+        if (!process.env.JWT_SECRET) {
+            console.error('JWT_SECRET is missing from environment configuration')
+
+            return res.status(500).json({
+                message: 'Login is temporarily unavailable'
+            })
+        }
+
+        // 10. Create a token for the authenticated user.
+        const token = jwt.sign(
+            {
+                id: user._id.toString(),
+                username: user.username
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: '1d'
+            }
+        )
+
+        // 11. Store the token in a protected cookie.
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 24 * 60 * 60 * 1000,
+            path: '/'
+        })
+
+        // 12. Return only public user information.
+        return res.status(200).json({
+            message: 'Login successful',
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            }
+        })
+
+    } catch (error) {
+        // Log the technical error on the server, not in the response.
+        console.error('Login error:', error)
+
+        return res.status(500).json({
+            message: 'Something went wrong. Please try again later.'
+        })
+    }
+}
+
+
+
 
 module.exports = {
-    registerController
+    registerController,
+    loginController
 }
