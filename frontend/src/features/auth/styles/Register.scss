@@ -1,0 +1,230 @@
+
+/* 1. Main registration page */
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #111827;
+
+  background: linear-gradient(135deg, #f8fafc, #f5f0ff);
+
+  /* Keep padding inside the element's width */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* 2. Registration card */
+  .register-container {
+    width: 100%;
+    max-width: 440px;
+    padding: 32px 24px;
+
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+    /* Heading */
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-align: center;
+    }
+  }
+
+  /* 3. Description */
+  .register-description {
+    margin: 10px 0 24px;
+    color: #6b7280;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  /* 4. Error and success messages */
+  .register-error,
+  .register-success {
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .register-error {
+    color: #b91c1c;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+
+    p {
+      margin: 4px 0 0;
+    }
+  }
+
+  .register-success {
+    color: #15803d;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+  }
+
+  /* 5. Registration form */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* Each label and input */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Input fields */
+    input {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+
+      background-color: #ffffff;
+      color: #111827;
+
+      font-family: inherit;
+      font-size: 16px;
+
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      /* Placeholder text */
+      &::placeholder {
+        color: #9ca3af;
+      }
+
+      /* When the user moves the mouse over the input */
+      &:hover {
+        border-color: #9ca3af;
+      }
+
+      /* When the user clicks the input */
+      &:focus {
+        outline: none;
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+      }
+
+      /* When the input is disabled */
+      &:disabled {
+        background-color: #f3f4f6;
+        cursor: not-allowed;
+      }
+    }
+
+    /* Password help text */
+    small {
+      color: #6b7280;
+      font-size: 13px;
+    }
+  }
+
+  /* 6. Create Account button */
+  button[type="submit"] {
+    min-height: 50px;
+    margin-top: 4px;
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 25px;
+
+    background: linear-gradient(135deg, #7c3aed, #db2777);
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+
+    /* Mouse hover effect */
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #6d28d9, #be185d);
+      transform: translateY(-2px);
+    }
+
+    /* Keyboard focus */
+    &:focus-visible {
+      outline: 3px solid #c4b5fd;
+      outline-offset: 3px;
+    }
+
+    /* Disabled button */
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  /* 7. Login link section */
+  .register-footer {
+    margin: 24px 0 0;
+    color: #6b7280;
+    font-size: 15px;
+    text-align: center;
+
+    a {
+      color: #6d28d9;
+      font-weight: 700;
+      text-decoration: underline;
+
+      /* Hover effect */
+      &:hover {
+        color: #7c3aed;
+      }
+
+      /* Keyboard focus */
+      &:focus-visible {
+        outline: 2px solid #7c3aed;
+        outline-offset: 3px;
+      }
+    }
+  }
+}
+
+/* 8. Tablet and desktop screens */
+@media (min-width: 481px) {
+  .register-page {
+    .register-container {
+      padding: 40px 36px;
+
+      h1 {
+        font-size: 32px;
+      }
+    }
+  }
+}
+
+/* 9. Very small mobile screens */
+@media (max-width: 359px) {
+  .register-page {
+    .register-container {
+      padding: 24px 16px;
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  }
+}
