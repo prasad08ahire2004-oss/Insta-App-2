@@ -213,17 +213,16 @@ async function loginController(req, res) {
 
         // 5. Use the username if provided; otherwise, use the email
         // This allows both username + password and email + password login.
-        const loginValue = hasUsername
-            ? username.trim().toLowerCase()
-            : email.trim().toLowerCase()
+        const loginValue = (hasUsername ? username : email).trim().toLowerCase()
 
         // 6. Find the user and include the password hash.
         // Passwords are normally excluded because the model uses select: false.
-        const user = await userModel.findOne(
-            hasUsername
-                ? { username: loginValue }
-                : { email: loginValue }
-        ).select('+password')
+        const user = await userModel.findOne({
+            $or: [
+                { username: loginValue },
+                { email: loginValue }
+            ]
+        }).select('+password')
 
         // 7. Use the same error for unknown users and wrong passwords.
         // This avoids revealing whether an account exists.

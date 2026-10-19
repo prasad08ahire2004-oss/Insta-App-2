@@ -43,3 +43,30 @@ export async function register(username, email, password) {
         )
     }
 }
+
+export async function login(loginValue, password) {
+
+    /*
+    Ye function do values receive karta hai:
+        username
+        password
+    Ye values baad mein auth.context.jsx se aayengi.
+    loginValue mein user ka username ya email, dono mein se koi ek aa sakta hai.
+    */
+
+    try {
+        const response = await api.post('/login', {
+            username: loginValue,
+            password
+        })
+
+        // Yahan Axios backend ko POST request bhejta hai.
+        // Request body mein username aur password jayenge
+
+        return response.data
+        // Agar backend login successful karta hai, toh uska response data return hoga
+    } catch (err) {
+        throw err
+    }
+    // Agar backend error deta hai, toh Axios error throw karega aur tumhara catch use aage bhej dega.
+}
