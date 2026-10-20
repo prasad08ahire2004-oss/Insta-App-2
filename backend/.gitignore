@@ -1,2 +1,4 @@
 node_modules
 .env
+post.model.js
+post.controller.js
