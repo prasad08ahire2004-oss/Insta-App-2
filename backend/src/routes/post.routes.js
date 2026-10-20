@@ -1,0 +1,27 @@
+const express = require('express')
+
+const postRouter = express.Router()
+
+const postController = require('../controllers/post.controller')
+
+const multer = require('multer')
+
+// Image ko temporarily memory mein store karna
+const upload = multer({
+    storage: multer.memoryStorage()
+})
+
+// Token se user ki identity verify karna
+const identifyUser = require('../middleware/auth.middleware')
+
+// Post create API hume ne yaha ye bhi verify kiya ki konse user ne post create ki hai
+postRouter.post(
+    '/',
+    identifyUser,
+    upload.single('image'),
+    postController.createPostController
+)
+
+module.exports = postRouter
+
+
