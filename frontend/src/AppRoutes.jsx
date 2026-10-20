@@ -4,6 +4,7 @@ import Home from './page/Home'
 import Register from './features/auth/pages/Register'
 import Login from './features/auth/pages/Login'
 import Feed from './features/post/pages/Feed'
+import CreatePost from './features/post/pages/CreatePost'
 
 
 const AppRoutes = () => {
@@ -16,6 +17,7 @@ const AppRoutes = () => {
             <Route path='/login' element={<Login/>} />
             <Route path='/' element={<Home/>} />
             <Route path='/feed' element={<Feed/>} />
+            <Route path='/createpost' element={<CreatePost/>} />
 
         </Routes>
 
