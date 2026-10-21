@@ -1,13 +1,14 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import Header from '../components/Header'
+import FeedBody from '../components/FeedBody'
 
 const Feed = () => {
   return (
     <div>
       
-      <NavLink to='/createpost'>
-        createpost
-      </NavLink>
+      <Header />
+      <FeedBody />
 
     </div>
   )
