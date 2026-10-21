@@ -67,6 +67,36 @@ async function createPostController(req, res) {
     }
 }
 
+// Feed ke liye saari posts fetch karna
+async function getFeedController(req, res) {
+    try {
+        // MongoDB se posts fetch karna
+        const posts = await postModel
+            .find({})
+            .sort({ _id: -1 })
+            .populate('user')     // populate('user') bhi kuch aisa hi karta hai: post mein stored user ID ki help se user ki information laata hai.
+            .lean()
+
+        // Successfully fetched posts frontend ko bhejna
+        return res.status(200).json({
+            success: true,
+            message: 'Feed fetched successfully',
+            posts
+        })
+
+    } catch (error) {
+        // Error ko terminal mein dekhne ke liye
+        console.error('Get feed error:', error)
+
+        // Database ya server error hone par response bhejna
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to fetch feed. Please try again.'
+        })
+    }
+}
+
 module.exports = {
-    createPostController
+    createPostController,
+    getFeedController
 }

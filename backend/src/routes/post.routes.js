@@ -22,6 +22,8 @@ postRouter.post(
     postController.createPostController
 )
 
+postRouter.get('/feed' , identifyUser , postController.getFeedController)
+
 module.exports = postRouter
 
 
