@@ -18,6 +18,9 @@ const CreatePost = () => {
     // Success message
     const [message, setMessage] = useState('')
 
+    //loading batayegi ki API request chal rahi hai ya nahi.
+    const [loading, setLoading] = useState(false)
+
 
     // Create preview URL when an image is selected
     useEffect(() => {
@@ -69,7 +72,11 @@ const CreatePost = () => {
 
         event.preventDefault()
 
-        if (!selectedFile) return
+        // Image select nahi hai ya request already chal rahi hai
+        if (!selectedFile || loading) return
+
+        // Upload start
+        setLoading(true)
 
         try {
             // Loading start hone ka message
@@ -94,6 +101,9 @@ const CreatePost = () => {
         } catch (error) {
             // API fail hone par error message dikhana
             setMessage(error.message || 'Failed to create post.')
+        } finally {
+            // Success ho ya error, loading band karna
+            setLoading(false)
         }
 
     }
@@ -306,9 +316,9 @@ const CreatePost = () => {
                 <button
                     className="post-btn"
                     type="submit"
-                    disabled={!selectedFile}
+                    disabled={!selectedFile || loading}
                 >
-                    Post
+                    {loading ? 'Posting...' : 'Post'}
                 </button>
 
             </div>
