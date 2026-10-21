@@ -1,8 +1,32 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react'
 import '../styles/FeedBody.scss'
 import Post from './Post'
+import { usePost } from '../hooks/usePost'
 
 const FeedBody = () => {
+
+    // Context se feed data, loading state aur API function lena
+    //Ye line usePost.js se returned values receive karti hai.
+    const { feed, loading, fetchFeed } = usePost()
+
+    const [error, setError] = React.useState('')
+
+
+    // Component mount hone par feed fetch karta hai aur feed fetch fail ho gai tho error message set kar deti hai
+    useEffect(() => {
+        const loadFeed = async () => {
+            setError('')
+
+            try {
+                await fetchFeed()
+            } catch (error) {
+                setError(error.message || 'Failed to fetch posts.')
+            }
+        }
+
+        loadFeed()
+    }, [])
+
     return (
         <div className="layout">
 
@@ -58,36 +82,40 @@ const FeedBody = () => {
 
                 </a>
 
+                {/* Loading message */}
+                {loading && (
+                    <p className="feed-message">
+                        Loading posts...
+                    </p>
+                )}
+
+                {/* Error message */}
+                {error && (
+                    <p className="feed-message error">
+                        {error}
+                    </p>
+                )}
+
 
                 
-                {/* First Post */}
-                <Post
-                avatar="A"
-    username="ava.explores"
-    location="Algarve, Portugal"
-    time="2h"
-    image="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&h=900&q=75"
-    imageAlt="Golden sunset over a calm beach"
-    liked={true}
-    likes="1,249"
-    caption="Golden hour never gets old."
-    comments="86"
-                />
+                {/* Backend se aane wali posts render karna */}
+                {!loading && !error && feed.map((post, index) => (
 
+                    <Post
+                        key={post._id}
+                        avatar={post.user?.username?.charAt(0).toUpperCase() || 'U'}
+                        username={post.user?.username || 'Unknown User'}
+                        location={['Mumbai, India', 'Goa, India', 'Bhopal, India'][index % 3]}
+                        time="Just now"
+                        image={post.imgUrl}
+                        imageAlt={post.caption || 'User post'}
+                        liked={false}
+                        likes={Math.floor(Math.random() * 1000) + 100}
+                        caption={post.caption}
+                        comments={Math.floor(Math.random() * 100) + 1}
+                    />
 
-                {/* Second Post */}
-                <Post
-                avatar="N"
-    username="noah.rivera"
-    location="Lisbon"
-    time="5h"
-    image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&h=900&q=75"
-    imageAlt="A beautifully plated meal"
-    liked={false}
-    likes="532"
-    caption="Sunday brunch with the best people."
-    comments="41"
-                />
+                ))}
 
 
                 <p className="feed-end">

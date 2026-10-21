@@ -66,3 +66,35 @@ export async function createPost(imageFile, caption) {
     }
 
 }
+
+// Backend se feed ki saari posts fetch karna
+export async function getFeed() {
+    try {
+        // Backend se posts maangna
+        const response = await api.get('/api/posts/feed')
+        //Yahan backend ka poora HTTP response response variable mein store hota hai
+
+        // Backend ka response return karna aur return response.data →  data ko getFeed() call karne wali jagah par bhejta hai.
+        return response.data
+
+    } catch (error) {
+        // Backend ne error response diya
+        if (error.response) {
+            throw new Error(
+                error.response.data?.message || 'Failed to fetch feed.'
+            )
+        }
+
+        // Request bheji gayi, lekin response nahi mila
+        if (error.request) {
+            throw new Error(
+                'Server se response nahi mila. Please check your connection.'
+            )
+        }
+
+        // Koi doosri unexpected problem
+        throw new Error(
+            error.message || 'Something went wrong while fetching the feed.'
+        )
+    }
+}

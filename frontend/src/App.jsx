@@ -1,6 +1,7 @@
 import React from 'react'
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import { AuthProvider } from './features/auth/auth.context.jsx'
+import { PostContextProvider } from './features/post/post.context.jsx'
 import AppRoutes from './AppRoutes'
 
 const App = () => {
@@ -8,9 +9,13 @@ const App = () => {
 
       <AuthProvider>
 
-        <AppRoutes/>
+            <PostContextProvider>
 
-      </AuthProvider>
+                <AppRoutes />
+
+            </PostContextProvider>
+            
+        </AuthProvider>
       
   )
 }
