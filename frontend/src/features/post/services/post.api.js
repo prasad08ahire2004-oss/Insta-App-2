@@ -98,3 +98,37 @@ export async function getFeed() {
         )
     }
 }
+
+// Kisi post ko like ya unlike karne ke liye backend API call karna
+export async function toggleLike(postId) {
+    try {
+        // postId batata hai ki user kis post ke heart par click kar raha hai.
+        // Ye POST request backend ke like/unlike route ko call karti hai.
+        const response = await api.post(`/api/posts/${postId}/like`)
+
+        // Backend ka actual response return karna.
+        // Ismein success, liked aur message jaise fields milenge.
+        return response.data
+
+    } catch (error) {
+
+        // Backend ne error response diya, jaise 401 ya 404.
+        if (error.response) {
+            throw new Error(
+                error.response.data?.message || 'Failed to like or unlike post.'
+            )
+        }
+
+        // Request bheji gayi, lekin backend se response nahi mila.
+        if (error.request) {
+            throw new Error(
+                'Server se response nahi mila. Please check your connection.'
+            )
+        }
+
+        // Request prepare karte waqt koi unexpected problem hui.
+        throw new Error(
+            error.message || 'Something went wrong while liking the post.'
+        )
+    }
+}

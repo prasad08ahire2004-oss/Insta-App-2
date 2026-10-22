@@ -1,7 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { usePost } from '../hooks/usePost'
 import '../styles/Post.scss'
 
 const Post = (props) => {
+
+    // usePost se backend like/unlike function lena
+    const { handleToggleLike } = usePost()
+
+    // Request chal rahi hai ya nahi, ye track karna
+    const [likeLoading, setLikeLoading] = useState(false)
+
+    // Heart button click hone par ye function chalega
+    const handleLikeClick = async () => {
+
+        // Request chal rahi ho toh dobara click allow nahi karna
+        if (likeLoading) {
+            return
+        }
+
+        try {
+            // Button ko temporarily disable karna
+            setLikeLoading(true)
+
+            // Parent se mili post ID backend ko bhejna
+            await handleToggleLike(props.postId)
+
+        } catch (error) {
+            // Request fail hui toh error console mein dikhana
+            console.error('Like button error:', error)
+
+        } finally {
+            // Request complete hone par button dobara enable karna
+            setLikeLoading(false)
+        }
+    }
 
     return (
         <article className="post">
@@ -54,6 +86,8 @@ const Post = (props) => {
                         type="button"
                         className={`icon-btn ${props.liked ? 'liked' : ''}`}
                         aria-label={props.liked ? 'Unlike' : 'Like'}
+                        onClick={handleLikeClick}
+                        disabled={likeLoading}
                     >
 
                         <svg

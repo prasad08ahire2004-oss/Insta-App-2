@@ -102,15 +102,31 @@ const FeedBody = () => {
                 {!loading && !error && feed.map((post, index) => (
 
                     <Post
+                        //har post ki unique ID React ko dena
                         key={post._id}
+
+                        //Backend ke user data se avatar aur username lena
                         avatar={post.user?.username?.charAt(0).toUpperCase() || 'U'}
                         username={post.user?.username || 'Unknown User'}
+
+                        // Ye abhi display ke liye placeholder values hain
                         location={['Mumbai, India', 'Goa, India', 'Bhopal, India'][index % 3]}
                         time="Just now"
+
+                        // Backend se post ki image aur caption lena
                         image={post.imgUrl}
                         imageAlt={post.caption || 'User post'}
-                        liked={false}
-                        likes={Math.floor(Math.random() * 1000) + 100}
+
+                        // Post ki ID Like API ko bhejne ke liye
+                        postId={post._id}
+
+                        // Backend se current user ka actual like status lena
+                        liked={post.isLiked}
+
+                        // Backend se actual like count lena
+                        likes={post.likesCount ?? 0}
+
+                        // Post ki caption aur comments display karna
                         caption={post.caption}
                         comments={Math.floor(Math.random() * 100) + 1}
                     />
