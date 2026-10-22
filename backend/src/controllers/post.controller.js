@@ -1,3 +1,5 @@
+const mongoose = require('mongoose')
+
 const postModel = require('../models/post.model')
 
 const likeModel = require('../models/like.model')
@@ -69,17 +71,96 @@ async function createPostController(req, res) {
     }
 }
 
-// Feed ke liye saari posts fetch karna
+// Feed ke liye saari posts fetch karna aur post ka like unlike count karna
 async function getFeedController(req, res) {
     try {
-        // MongoDB se posts fetch karna
-        const posts = await postModel
-            .find({})
-            .sort({ _id: -1 })
-            .populate('user')     // populate('user') bhi kuch aisa hi karta hai: post mein stored user ID ki help se user ki information laata hai.
-            .lean()
+        // Step 1: Logged-in user ki ID JWT middleware se milti hai.
+        // MongoDB aggregation mein compare karne ke liye
+        // user ID ko ObjectId mein convert kar rahe hain.
+        const userId = new mongoose.Types.ObjectId(req.user.id)
 
-        // Successfully fetched posts frontend ko bhejna
+        // Step 2: MongoDB aggregation pipeline start.
+        // Har stage data ko process karke next stage ko deti hai.
+        const posts = await postModel.aggregate([
+
+            // Step 3: Posts ko latest se oldest order mein sort karo.
+            {
+                $sort: {
+                    _id: -1
+                }
+            },
+
+            // Step 4: Har post ke saath uske likes find karo.
+            // 'likes' MongoDB collection ka naam hai.
+            // Post ki _id aur Like document ki post field match hoti hain.
+            {
+                $lookup: {
+                    from: 'likes',
+                    localField: '_id',
+                    foreignField: 'post',
+                    as: 'postLikes'
+                }
+            },
+
+            // Step 5: Har post ke liye do naye fields banao.
+            {
+                $addFields: {
+
+                    // postLikes array mein jitne like documents hain,
+                    // unki total quantity likesCount ban jayegi.
+                    likesCount: {
+                        $size: '$postLikes'
+                    },
+
+                    // Check karo ki current user ki ID
+                    // post ke likes mein present hai ya nahi.
+                    // Present hai toh true, warna false.
+                    isLiked: {
+                        $in: [userId, '$postLikes.user']
+                    }
+                }
+            },
+
+            // Step 6: Post create karne wale user ki details find karo.
+            // Post ka user ID aur users collection ki _id match hoti hain.
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'userDetails'
+                }
+            },
+
+            // Step 7: userDetails array ko single user object mein convert karo.
+            // preserveNullAndEmptyArrays se user details missing hone par
+            // post ko result se remove nahi kiya jayega.
+            {
+                $unwind: {
+                    path: '$userDetails',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+
+            // Step 8: userDetails object ko original 'user' field mein rakho.
+            // Ab frontend ko sirf user ID ki jagah user ki details milengi.
+            {
+                $addFields: {
+                    user: '$userDetails'
+                }
+            },
+
+            // Step 9: Internal processing fields ko response se remove karo.
+            // Frontend ko postLikes aur userDetails ki alag fields nahi chahiye.
+            {
+                $project: {
+                    postLikes: 0,
+                    userDetails: 0
+                }
+            }
+        ])
+
+        // Step 10: Process hui posts frontend ko response mein bhejo.
         return res.status(200).json({
             success: true,
             message: 'Feed fetched successfully',
@@ -87,10 +168,10 @@ async function getFeedController(req, res) {
         })
 
     } catch (error) {
-        // Error ko terminal mein dekhne ke liye
+        // Step 11: Error ki details backend terminal mein print karo.
         console.error('Get feed error:', error)
 
-        // Database ya server error hone par response bhejna
+        // Frontend ko failure response bhejo.
         return res.status(500).json({
             success: false,
             message: 'Failed to fetch feed. Please try again.'
