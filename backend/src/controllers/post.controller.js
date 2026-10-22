@@ -1,5 +1,7 @@
 const postModel = require('../models/post.model')
 
+const likeModel = require('../models/like.model')
+
 const ImageKit = require('@imagekit/nodejs')
 const { toFile } = require('@imagekit/nodejs')
 
@@ -96,7 +98,63 @@ async function getFeedController(req, res) {
     }
 }
 
+async function toggleLikeController(req, res) {
+    try {
+        const { postId } = req.params
+        const userId = req.user.id
+
+        // Check karo ki post database mein exist karti hai ya nahi
+        const post = await postModel.findById(postId)
+
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: 'Post not found.'
+            })
+        }
+
+        // Check karo ki user ne is post ko pehle like kiya hai ya nahi
+        const existingLike = await likeModel.findOne({
+            user: userId,
+            post: postId
+        })
+
+        if (existingLike) {
+            // Pehle se like hai, toh unlike karo
+            await likeModel.deleteOne({
+                _id: existingLike._id
+            })
+
+            return res.status(200).json({
+                success: true,
+                liked: false,
+                message: 'Post unliked successfully.'
+            })
+        }
+
+        // Like nahi hai, toh naya like create karo
+        await likeModel.create({
+            user: userId,
+            post: postId
+        })
+
+        return res.status(201).json({
+            success: true,
+            liked: true,
+            message: 'Post liked successfully.'
+        })
+    } catch (error) {
+        console.error('Toggle like error:', error)
+
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to like or unlike post.'
+        })
+    }
+}
+
 module.exports = {
     createPostController,
-    getFeedController
+    getFeedController,
+    toggleLikeController
 }

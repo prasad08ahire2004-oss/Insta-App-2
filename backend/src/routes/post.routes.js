@@ -24,6 +24,12 @@ postRouter.post(
 
 postRouter.get('/feed' , identifyUser , postController.getFeedController)
 
+postRouter.post(
+    '/:postId/like',
+    identifyUser,
+    postController.toggleLikeController
+)
+
 module.exports = postRouter
 
 
