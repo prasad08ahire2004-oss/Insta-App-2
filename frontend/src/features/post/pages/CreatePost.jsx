@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/CreatePost.scss'
+import { useNavigate } from 'react-router-dom'
 
 import { createPost } from '../services/post.api'
 // hum ne createPost function jo post.api.js mai bana tha vo import kiya hai ye function hum se image aur caption ki values leke backend ko dega aur response receive karega
 
 const CreatePost = () => {
+
+    const navigate = useNavigate()
 
     // Selected image file
     const [selectedFile, setSelectedFile] = useState(null)
@@ -92,6 +95,9 @@ const CreatePost = () => {
             setSelectedFile(null)
             setCaption('')
             event.target.reset()
+
+            // Feed page par navigate karna
+            navigate('/feed')
 
             // 2.5 seconds baad message remove karna
             setTimeout(() => {
