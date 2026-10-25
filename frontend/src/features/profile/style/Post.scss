@@ -1,0 +1,166 @@
+// ===============================
+// POSTS SECTION
+// ===============================
+
+.screen {
+    .posts {
+        padding: 15px;
+
+        // Posts grid
+        &__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        // Single post card
+        .post {
+            position: relative;
+            aspect-ratio: 1;
+
+            border: 2px solid #15122b;
+            border-radius: 15px;
+            overflow: hidden;
+
+            // Decorative sun
+            &__sun {
+                position: absolute;
+                top: 12%;
+                right: 14%;
+
+                width: 38%;
+                height: 38%;
+
+                border-radius: 50%;
+                background-color: #ffc93c;
+            }
+
+            // Decorative ground
+            &__ground {
+                position: absolute;
+                bottom: -22%;
+                left: -12%;
+
+                width: 124%;
+                height: 52%;
+
+                border-radius: 50%;
+                background-color: #2f6f62;
+            }
+
+            // Three dots button
+            &__menu {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+
+                width: 32px;
+                height: 32px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border: none;
+                background: transparent;
+                cursor: pointer;
+            }
+
+            // Three dots circle
+            &__dots {
+                width: 28px;
+                height: 28px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border: 2px solid #15122b;
+                border-radius: 50%;
+
+                background-color: white;
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            // Different post backgrounds
+            &--hike {
+                background-color: #bfe9dd;
+            }
+
+            &--dinner {
+                background-color: #ffb199;
+
+                .post__ground {
+                    background-color: #e0533d;
+                }
+            }
+
+            &--beach {
+                background-color: #8fd3ff;
+
+                .post__ground {
+                    background-color: #2e86de;
+                }
+            }
+
+            &--city {
+                background-color: #c9b8ff;
+
+                .post__ground {
+                    background-color: #2b2560;
+                }
+            }
+
+            &--flowers {
+                background-color: #ffe08a;
+
+                .post__sun {
+                    background-color: #ff6fa5;
+                }
+
+                .post__ground {
+                    background-color: #ff8a6b;
+                }
+            }
+
+            &--cafe {
+                background-color: #f4d9a0;
+
+                .post__sun {
+                    background-color: white;
+                }
+
+                .post__ground {
+                    background-color: #7a4b2a;
+                }
+            }
+        }
+
+        // No posts message
+        .empty {
+            padding: 40px 15px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+
+            text-align: center;
+
+            &__title {
+                font-size: 20px;
+                color: #15122b;
+            }
+
+            &__text {
+                font-size: 14px;
+                color: #5a5675;
+            }
+        }
+    }
+}

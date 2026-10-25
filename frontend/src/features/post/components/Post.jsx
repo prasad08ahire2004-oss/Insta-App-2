@@ -41,7 +41,7 @@ const Post = (props) => {
             {/* Post Header */}
             <header className="post-header">
 
-                <a href="/profile" className="post-author">
+                <a href="#" className="post-author">
 
                     <span className="post-avatar">
                         {props.avatar}

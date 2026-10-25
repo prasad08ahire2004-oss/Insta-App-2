@@ -1,0 +1,43 @@
+// ===============================
+// HEADER
+// ===============================
+
+.screen {
+    .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 20px 16px 12px;
+        background-color: #f6f4ff;
+
+        // Username
+        &__title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: #15122b;
+        }
+
+        // Settings button
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 2px solid #15122b;
+            border-radius: 50%;
+
+            background-color: white;
+            color: #15122b;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #eae5ff;
+            }
+        }
+    }
+}
