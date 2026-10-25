@@ -179,6 +179,41 @@ async function getFeedController(req, res) {
     }
 }
 
+// Logged-in user ne jitni posts create ki hain, unhe fetch karna
+async function getMyPostsController(req, res) {
+
+    try {
+
+        // Step 1: Logged-in user ki ID middleware se lena
+        const userId = req.user.id
+
+        // Step 2: MongoDB se sirf is user ki posts find karna
+        const posts = await postModel.find({
+            user: userId
+        }).sort({
+            createdAt: -1
+        })
+
+        // Step 3: Frontend ko posts return karna
+        return res.status(200).json({
+            success: true,
+            message: 'User posts fetched successfully',
+            posts
+        })
+
+    } catch (error) {
+
+        // Step 4: Error handle karna
+        console.error('Get my posts error:', error)
+
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to fetch user posts.'
+        })
+
+    }
+}
+
 async function toggleLikeController(req, res) {
     try {
         const { postId } = req.params
@@ -237,5 +272,6 @@ async function toggleLikeController(req, res) {
 module.exports = {
     createPostController,
     getFeedController,
-    toggleLikeController
+    toggleLikeController,
+    getMyPostsController
 }

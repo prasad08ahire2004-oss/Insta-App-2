@@ -15,20 +15,13 @@ const upload = multer({
 const identifyUser = require('../middleware/auth.middleware')
 
 // Post create API hume ne yaha ye bhi verify kiya ki konse user ne post create ki hai
-postRouter.post(
-    '/',
-    identifyUser,
-    upload.single('image'),
-    postController.createPostController
-)
+postRouter.post('/', identifyUser, upload.single('image'), postController.createPostController)
 
 postRouter.get('/feed' , identifyUser , postController.getFeedController)
 
-postRouter.post(
-    '/:postId/like',
-    identifyUser,
-    postController.toggleLikeController
-)
+postRouter.get('/myPosts' , identifyUser , postController.getMyPostsController)
+
+postRouter.post('/:postId/like', identifyUser, postController.toggleLikeController)
 
 module.exports = postRouter
 
