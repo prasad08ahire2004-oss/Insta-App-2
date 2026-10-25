@@ -29,12 +29,12 @@ const Profile = () => {
     }, [])
 
     // ProfileContext mein posts ki current value check karna
-// Jab bhi posts array change hoga, console mein print hoga
-useEffect(() => {
+    // Jab bhi posts array change hoga, console mein print hoga
+    useEffect(() => {
 
-    console.log('Profile Posts:', posts)
+        console.log('Profile Posts:', posts)
 
-}, [posts])
+    }, [posts])
 
 
 

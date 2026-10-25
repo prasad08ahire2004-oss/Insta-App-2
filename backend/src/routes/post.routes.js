@@ -21,6 +21,9 @@ postRouter.get('/feed' , identifyUser , postController.getFeedController)
 
 postRouter.get('/myPosts' , identifyUser , postController.getMyPostsController)
 
+// Logged-in user ki post delete karne ka route
+postRouter.delete('/:postId', identifyUser, postController.deletePostController)
+
 postRouter.post('/:postId/like', identifyUser, postController.toggleLikeController)
 
 module.exports = postRouter

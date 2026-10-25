@@ -214,6 +214,72 @@ async function getMyPostsController(req, res) {
     }
 }
 
+// Logged-in user ki post delete karna
+async function deletePostController(req, res) {
+
+    try {
+
+        // URL parameter se delete hone wali post ki ID lena
+        const { postId } = req.params
+
+        // JWT middleware se logged-in user ki ID lena
+        const userId = req.user.id
+
+        // Check karna ki postId valid MongoDB ObjectId hai
+        if (!mongoose.isValidObjectId(postId)) {
+
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid post ID'
+            })
+
+        }
+
+        // MongoDB mein post find karna
+        const post = await postModel.findById(postId)
+
+        // Agar post exist nahi karti
+        if (!post) {
+
+            return res.status(404).json({
+                success: false,
+                message: 'Post not found'
+            })
+
+        }
+
+        // Check karna ki post logged-in user ki hi hai
+        if (post.user.toString() !== userId.toString()) {
+
+            return res.status(403).json({
+                success: false,
+                message: 'You are not allowed to delete this post'
+            })
+
+        }
+
+        // Ownership verify hone ke baad post delete karna
+        await postModel.findByIdAndDelete(postId)
+
+        // Frontend ko success response bhejna
+        return res.status(200).json({
+            success: true,
+            message: 'Post deleted successfully'
+        })
+
+    } catch (error) {
+
+        console.error('Delete Post Error:', error)
+
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to delete post'
+        })
+
+    }
+
+}
+
 async function toggleLikeController(req, res) {
     try {
         const { postId } = req.params
@@ -273,5 +339,6 @@ module.exports = {
     createPostController,
     getFeedController,
     toggleLikeController,
-    getMyPostsController
+    getMyPostsController,
+    deletePostController
 }
