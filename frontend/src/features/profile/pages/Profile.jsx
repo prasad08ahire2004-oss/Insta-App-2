@@ -15,7 +15,8 @@ const Profile = () => {
         posts,
         loading,
         error,
-        fetchMyPosts
+        fetchMyPosts,
+        handleDeletePost
     } = useProfile()
 
 
@@ -50,6 +51,29 @@ const Profile = () => {
     // Success message ki state
     const [toast, setToast] = useState('')
 
+    // Jab bhi toast message change hoga, ye effect execute hoga
+    useEffect(() => {
+
+        // Agar toast empty hai toh kuch nahi karna
+        if (!toast) return
+
+        // 3 seconds baad toast message clear karna
+        const timer = setTimeout(() => {
+
+            setToast('')
+
+        }, 3000)
+
+        // Component unmount hone ya toast change hone par
+        // previous timer ko clear karna
+        return () => {
+
+            clearTimeout(timer)
+
+        }
+
+    }, [toast])
+
     // Post options menu open karna
     const openPostOptions = (post) => {
         setSelectedPost(post)
@@ -70,21 +94,34 @@ const Profile = () => {
         setShowDeleteConfirm(false)
     }
 
-    // Selected post delete karna
-    const handleDeletePost = () => {
+    // Selected post ko delete karne ke liye confirmation handler
+    const confirmDeletePost = async () => {
 
+        // Agar koi post selected nahi hai toh function stop karna
         if (!selectedPost) return
 
-        // Abhi sirf React state se post remove kar rahe hain
-        setPosts((previousPosts) => {
-            return previousPosts.filter((post) => {
-                return post.id !== selectedPost.id
-            })
-        })
+        try {
 
-        setShowDeleteConfirm(false)
-        setSelectedPost(null)
-        setToast('Post deleted successfully')
+            // Selected post ki MongoDB ID custom hook ko bhejna
+            // Custom hook backend API call karega
+            await handleDeletePost(selectedPost._id)
+
+            // API successful hone par confirmation dialog close karna
+            setShowDeleteConfirm(false)
+
+            // Selected post clear karna
+            setSelectedPost(null)
+
+            // User ko success message show karna
+            setToast('Post deleted successfully')
+
+        } catch (err) {
+
+            // API fail hone par error message show karna
+            setToast(err.message || 'Failed to delete post')
+
+        }
+
     }
 
     return (
@@ -101,14 +138,12 @@ const Profile = () => {
 
                 <section className="identity">
 
-                    <span
-                        className="avatar"
-                        role="img"
-                        aria-label="Profile photo of Maya Rao"
-                    >
+                    <span className="avatar" role="img" aria-label="Profile photo of Maya Rao" >
+
                         <span className="avatar__inner">
                             MR
                         </span>
+
                     </span>
 
                     <h2 className="identity__name">
@@ -129,42 +164,46 @@ const Profile = () => {
 
                 {/* ================= PROFILE STATS ================= */}
 
-                <section
-                    className="stats"
-                    aria-label="Profile stats"
-                >
+                <section className="stats" aria-label="Profile stats" >
 
                     <div className="stat">
+
                         <strong className="stat__value">
+
                             {posts.length}
+
                         </strong>
+
                         <span className="stat__label">
+
                             Posts
+
                         </span>
+
                     </div>
 
-                    <a
-                        className="stat stat--link"
-                        href="/followers"
-                    >
+                    <a className="stat stat--link" href="/followers" >
+
                         <strong className="stat__value">
                             182
                         </strong>
+
                         <span className="stat__label">
                             Followers
                         </span>
+
                     </a>
 
-                    <a
-                        className="stat stat--link"
-                        href="/following"
-                    >
+                    <a className="stat stat--link" href="/following" >
+
                         <strong className="stat__value">
                             164
                         </strong>
+
                         <span className="stat__label">
                             Following
                         </span>
+
                     </a>
 
                 </section>
@@ -174,10 +213,8 @@ const Profile = () => {
 
                 <section className="actions">
 
-                    <a
-                        className="btn btn--primary"
-                        href="/editprofile"
-                    >
+                    <a className="btn btn--primary" href="/editprofile" >
+
                         <svg
                             width="18"
                             height="18"
@@ -189,18 +226,17 @@ const Profile = () => {
                             strokeLinejoin="round"
                             aria-hidden="true"
                         >
+
                             <path d="M4 20h4L19 9l-4-4L4 16z" />
                             <path d="M13 7l4 4" />
+
                         </svg>
 
                         Edit profile
+
                     </a>
 
-                    <button
-                        className="icon-btn icon-btn--large"
-                        type="button"
-                        aria-label="Share profile"
-                    >
+                    <button className="icon-btn icon-btn--large" type="button" aria-label="Share profile" >
                         <svg
                             width="20"
                             height="20"
@@ -215,7 +251,9 @@ const Profile = () => {
                             <path d="M12 15V4" />
                             <path d="M8 8l4-4 4 4" />
                             <path d="M5 13v6h14v-6" />
+
                         </svg>
+
                     </button>
 
                 </section>
@@ -223,10 +261,7 @@ const Profile = () => {
 
                 {/* ================= MY CIRCLES ================= */}
 
-                <section
-                    className="circles"
-                    aria-label="My circles"
-                >
+                <section className="circles" aria-label="My circles" >
 
                     <h3 className="section-title">
                         My circles
@@ -235,6 +270,7 @@ const Profile = () => {
                     <div className="circles__list">
 
                         <div className="circle">
+
                             <span className="circle__badge circle__badge--green">
                                 HC
                             </span>
@@ -243,9 +279,11 @@ const Profile = () => {
                                 <strong>Hike Crew</strong>
                                 <span>6 people</span>
                             </span>
+
                         </div>
 
                         <div className="circle">
+
                             <span className="circle__badge circle__badge--coral">
                                 DC
                             </span>
@@ -254,9 +292,11 @@ const Profile = () => {
                                 <strong>Dinner Club</strong>
                                 <span>4 people</span>
                             </span>
+
                         </div>
 
                         <div className="circle">
+
                             <span className="circle__badge circle__badge--purple">
                                 FM
                             </span>
@@ -265,6 +305,7 @@ const Profile = () => {
                                 <strong>Family</strong>
                                 <span>8 people</span>
                             </span>
+
                         </div>
 
                     </div>
@@ -274,11 +315,7 @@ const Profile = () => {
 
                 {/* ================= PROFILE TABS ================= */}
 
-                <div
-                    className="tabs"
-                    role="tablist"
-                    aria-label="Profile content"
-                >
+                <div className="tabs" role="tablist" aria-label="Profile content" >
 
                     {['Posts', 'Moments', 'Saved'].map((tab) => (
 
@@ -292,7 +329,9 @@ const Profile = () => {
                             aria-selected={activeTab === tab}
                             onClick={() => setActiveTab(tab)}
                         >
+
                             {tab}
+
                         </button>
 
                     ))}
@@ -354,16 +393,9 @@ const Profile = () => {
 
             {/* ================= BOTTOM NAVIGATION ================= */}
 
-            <nav
-                className="tabbar"
-                aria-label="Main"
-            >
+            <nav className="tabbar" aria-label="Main" >
 
-                <a
-                    className="tabbar__item"
-                    href="/feed"
-                    aria-label="Home"
-                >
+                <a className="tabbar__item" href="/feed" aria-label="Home" >
                     <svg
                         width="24"
                         height="24"
@@ -374,15 +406,15 @@ const Profile = () => {
                         strokeLinejoin="round"
                         aria-hidden="true"
                     >
+
                         <path d="M4 11l8-7 8 7v9H4z" />
+
                     </svg>
+
                 </a>
 
-                <a
-                    className="tabbar__item"
-                    href="/circles"
-                    aria-label="Circles"
-                >
+                <a className="tabbar__item" href="/circles" aria-label="Circles" >
+
                     <svg
                         width="24"
                         height="24"
@@ -393,17 +425,17 @@ const Profile = () => {
                         strokeLinecap="round"
                         aria-hidden="true"
                     >
+
                         <circle cx="9" cy="9" r="3.5" />
                         <circle cx="17" cy="10" r="2.5" />
                         <path d="M3 19c0-3 3-5 6-5s6 2 6 5M16 14c3 0 5 1.5 5 4" />
+
                     </svg>
+
                 </a>
 
-                <a
-                    className="tabbar__create"
-                    href="/create-post"
-                    aria-label="Create post"
-                >
+                <a className="tabbar__create" href="/create-post" aria-label="Create post" >
+
                     <svg
                         width="22"
                         height="22"
@@ -414,15 +446,15 @@ const Profile = () => {
                         strokeLinecap="round"
                         aria-hidden="true"
                     >
+
                         <path d="M12 5v14M5 12h14" />
+
                     </svg>
+
                 </a>
 
-                <a
-                    className="tabbar__item"
-                    href="/notifications"
-                    aria-label="Notifications"
-                >
+                <a className="tabbar__item" href="/notifications" aria-label="Notifications" >
+
                     <svg
                         width="24"
                         height="24"
@@ -434,20 +466,21 @@ const Profile = () => {
                         strokeLinejoin="round"
                         aria-hidden="true"
                     >
+
                         <path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4z" />
+
                     </svg>
+
                 </a>
 
-                <a
-                    className="tabbar__item tabbar__item--active"
-                    href="/profile"
-                    aria-label="Profile"
-                    aria-current="page"
-                >
+                <a className="tabbar__item tabbar__item--active" href="/profile" aria-label="Profile" aria-current="page" >
+
                     <span className="tabbar__avatar">
                         MR
                     </span>
+
                     <span className="tabbar__dot"></span>
+
                 </a>
 
             </nav>
@@ -458,27 +491,19 @@ const Profile = () => {
             {selectedPost && !showDeleteConfirm && (
 
                 <>
-                    <div
-                        className="overlay"
-                        onClick={closePostOptions}
-                    ></div>
 
-                    <div
-                        className="sheet"
-                        role="dialog"
-                        aria-modal="true"
-                        aria-label="Post options"
-                    >
+                    <div className="overlay" onClick={closePostOptions}> </div>
 
-                        <span className="sheet__handle"></span>
+                    <div className="sheet" role="dialog" aria-modal="true" aria-label="Post options" >
+
+                        <span className="sheet__handle"> </span>
 
                         <div className="sheet__head">
 
-                            <span
-                                className={`sheet__thumb post--${selectedPost.theme}`}
-                            ></span>
+                            <span className={`sheet__thumb post--${selectedPost.theme}`}> </span>
 
                             <span className="sheet__info">
+
                                 <strong>
                                     {selectedPost.title}
                                 </strong>
@@ -486,48 +511,33 @@ const Profile = () => {
                                 <span>
                                     Shared with {selectedPost.circle}
                                 </span>
+
                             </span>
 
                         </div>
 
-                        <button
-                            className="sheet__row"
-                            type="button"
-                        >
+                        <button className="sheet__row" type="button" >
                             Edit caption
                         </button>
 
-                        <button
-                            className="sheet__row"
-                            type="button"
-                        >
+                        <button className="sheet__row" type="button" >
                             Change who can see this
                         </button>
 
-                        <button
-                            className="sheet__row"
-                            type="button"
-                        >
+                        <button className="sheet__row" type="button" >
                             Save to your collection
                         </button>
 
-                        <button
-                            className="sheet__row sheet__row--danger"
-                            type="button"
-                            onClick={openDeleteConfirm}
-                        >
-                            Delete post
+                        <button className="sheet__row sheet__row--danger" type="button" onClick={openDeleteConfirm} >
+                            Delete Post..
                         </button>
 
-                        <button
-                            className="btn btn--outline"
-                            type="button"
-                            onClick={closePostOptions}
-                        >
+                        <button className="btn btn--outline" type="button" onClick={closePostOptions} >
                             Cancel
                         </button>
 
                     </div>
+
                 </>
 
             )}
@@ -538,47 +548,24 @@ const Profile = () => {
             {showDeleteConfirm && (
 
                 <>
-                    <div
-                        className="overlay overlay--dark"
-                        onClick={closeDeleteConfirm}
-                    ></div>
+                    <div className="overlay overlay--dark" onClick={closeDeleteConfirm} > </div>
 
-                    <div
-                        className="confirm"
-                        role="alertdialog"
-                        aria-modal="true"
-                        aria-labelledby="confirm-title"
-                        aria-describedby="confirm-text"
-                    >
+                    <div className="confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-text" >
 
-                        <h2
-                            className="confirm__title"
-                            id="confirm-title"
-                        >
+                        <h2 className="confirm__title" id="confirm-title" >
                             Delete this post?
                         </h2>
 
-                        <p
-                            className="confirm__text"
-                            id="confirm-text"
-                        >
+                        <p className="confirm__text" id="confirm-text" >
                             It will be removed for everyone in your circles.
                             This can't be undone.
                         </p>
 
-                        <button
-                            className="btn btn--danger"
-                            type="button"
-                            onClick={handleDeletePost}
-                        >
-                            Delete post
+                        <button className="btn btn--danger" type="button" onClick={confirmDeletePost} disabled={loading} >
+                            {loading ? 'Deleting...' : 'Yes, Delete Post'}
                         </button>
 
-                        <button
-                            className="btn btn--outline"
-                            type="button"
-                            onClick={closeDeleteConfirm}
-                        >
+                        <button className="btn btn--outline" type="button" onClick={closeDeleteConfirm} disabled={loading} >
                             Keep post
                         </button>
 
