@@ -26,6 +26,15 @@
             border-radius: 15px;
             overflow: hidden;
 
+            // Post ki actual image
+            &__image {
+                width: 100%;
+                height: 100%;
+
+                display: block;
+                object-fit: cover;
+            }
+
             // Decorative sun
             &__sun {
                 position: absolute;

@@ -1,64 +1,78 @@
 import React from 'react'
+
 import '../style/Post.scss'
 
-const Post = ({posts , openPostOptions}) => {
-  return (
-    <section
-    className="posts"
-    aria-label="My posts"
-    >
+const Post = ({ posts, openPostOptions }) => {
 
-        {posts.length > 0 ? (
+    return (
 
-            <ul className="posts__grid">
+        // Profile par logged-in user ki posts show karna
+        <section
+            className="posts"
+            aria-label="My posts"
+        >
 
-                {posts.map((post) => (
+            {/* Check karna ki user ki posts available hain ya nahi */}
+            {posts.length > 0 ? (
 
-                    <li
-                    key={post.id}
-                    className={`post post--${post.theme}`}
-                    data-title={post.title}
-                    data-circle={post.circle}
-                    >
+                // Posts ko grid format mein display karna
+                <ul className="posts__grid">
 
-                        {/* Decorative post background */}
-                        <span className="post__sun"></span>
-                        <span className="post__ground"></span>
+                    {/* Har post ke liye ek card create karna */}
+                    {posts.map((post) => (
 
-                        {/* Post options button */}
-                        <button
-                        className="post__menu"
-                        type="button"
-                        aria-label={`Options for post: ${post.title}`}
-                        onClick={() => openPostOptions(post)}
+                        <li
+                            key={post._id}
+                            className="post"
                         >
-                            <span className="post__dots">
-                                ···
-                            </span>
-                        </button>
 
-                    </li>
+                            {/* MongoDB mein stored ImageKit URL se image show karna */}
+                            <img
+                                className="post__image"
+                                src={post.imgUrl}
+                                alt={post.caption || 'User post'}
+                                loading="lazy"
+                            />
 
-                ))}
+                            {/* Three dots button se selected post ka options menu open karna */}
+                            <button
+                                className="post__menu"
+                                type="button"
+                                aria-label="Post options"
+                                onClick={() => openPostOptions(post)}
+                            >
 
-            </ul>
+                                <span className="post__dots">
+                                    ···
+                                </span>
 
-        ) : (
+                            </button>
 
+                        </li>
+
+                    ))}
+
+                </ul>
+
+            ) : (
+
+                // Agar user ne abhi tak koi post create nahi ki
                 <div className="empty">
+
                     <strong className="empty__title">
                         No posts yet
                     </strong>
 
                     <span className="empty__text">
-                        Share a moment with your circles.
+                        Share your first post with your friends.
                     </span>
+
                 </div>
 
             )}
 
-    </section>
-  )
+        </section>
+    )
 }
 
 export default Post

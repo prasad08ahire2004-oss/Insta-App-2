@@ -1,23 +1,42 @@
 
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import Header from '../components/Header'
 import Post from '../components/Post'
 import '../style/Profile.scss'
 
-// Temporary data — backend integration ke baad replace karenge
-const initialPosts = [
-    { id: 1, title: 'Sunday hike', circle: 'Hike Crew', theme: 'hike' },
-    { id: 2, title: 'Friday dinner', circle: 'Dinner Club', theme: 'dinner' },
-    { id: 3, title: 'Beach day', circle: 'Family', theme: 'beach' },
-    { id: 4, title: 'City at dusk', circle: 'Hike Crew', theme: 'city' },
-    { id: 5, title: 'Spring flowers', circle: 'Family', theme: 'flowers' },
-    { id: 6, title: 'Morning coffee', circle: 'Dinner Club', theme: 'cafe' }
-]
+// Profile feature ka custom hook
+// Isse posts, loading, error aur API call karne ka function milega
+import { useProfile } from '../hooks/useProfile'
 
 const Profile = () => {
 
-    // User ki posts store karna
-    const [posts, setPosts] = useState(initialPosts)
+    // ProfileContext se posts aur API-related data lena
+    const {
+        posts,
+        loading,
+        error,
+        fetchMyPosts
+    } = useProfile()
+
+
+
+    // Profile page load hone par logged-in user ki posts fetch karna
+    useEffect(() => {
+
+        // Backend API call karke posts ko Context mein store karega
+        fetchMyPosts()
+
+    }, [])
+
+    // ProfileContext mein posts ki current value check karna
+// Jab bhi posts array change hoga, console mein print hoga
+useEffect(() => {
+
+    console.log('Profile Posts:', posts)
+
+}, [posts])
+
+
 
     // Currently selected tab
     const [activeTab, setActiveTab] = useState('Posts')
@@ -285,10 +304,25 @@ const Profile = () => {
 
                 {activeTab === 'Posts' && (
 
-                    <Post
-                        posts={posts}
-                        openPostOptions={openPostOptions}
-                    />
+                    // API request chal rahi ho toh loading message show karna
+                    loading ? (
+
+                        <p>Loading your posts...</p>
+
+                    ) : error ? (
+
+                        // API fail hone par error message show karna
+                        <p>{error}</p>
+
+                    ) : (
+
+                        // API successful hone par posts child component ko bhejna
+                        <Post
+                            posts={posts}
+                            openPostOptions={openPostOptions}
+                        />
+
+                    )
 
                 )}
 
